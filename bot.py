@@ -11,11 +11,11 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 # Global variable to store the process running the command
 running_process = None
 
-# Function to handle the /execute command
-async def execute_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# Function to handle the /start command -> Starts running the ping_collector
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global running_process
     if running_process is None:
-        command = "./ping_collector.sh"  # Replace with your command to execute
+        command = "./ping_collector.sh"  # Replace with your command to start
         running_process = subprocess.Popen(['bash', '-c', command])
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Collecting ping data")
     else:
@@ -23,18 +23,18 @@ async def execute_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 
-# Function to handle the /terminate command
-async def terminate_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# Function to handle the /stop command -> Stops ping_collector
+async def stop_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global running_process
     if running_process is not None:
-        running_process.terminate()
+        running_process.stop()
         running_process = None
-        await context.bot.send_message(chat_id=update.effective_chat.id, text="Collecting terminated")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Stopped collecting")
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Ping data wasn't being collected")
 
-
-async def check(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# Function to handle the /check command -> It checks if the program is running
+async def check_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global running_process
     if running_process is not None:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Ping data is being collected")
@@ -46,9 +46,9 @@ def main():
     application = ApplicationBuilder().token(BOT_TOKEN).build()
 
     # Register the command handlers
-    application.add_handler(CommandHandler("execute", execute_command))
-    application.add_handler(CommandHandler("terminate", terminate_command))
-    application.add_handler(CommandHandler("check", check))
+    application.add_handler(CommandHandler("start", start_command))
+    application.add_handler(CommandHandler("stop", stop_command))
+    application.add_handler(CommandHandler("check", check_command))
 
 
     # Start the bot   
@@ -56,4 +56,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-d
