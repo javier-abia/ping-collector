@@ -52,20 +52,19 @@ async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if running_process is not None:
 
         try:
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="Ping is being collected, here is the progress")
             # Execute pyhton script to plot and send photo
             subprocess.Popen(['bash', '-c', "python3 graph.py"])
-            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png")
+            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Ping is being collected, here is the progress")
         except:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="There is no data to plot")
 
     else:
 
         try:
-            await context.bot.send_message(chat_id=update.effective_chat.id, text="Last data collection is:")
             # Execute pyhton script to plot and send photo
             subprocess.Popen(['bash', '-c', "python3 graph.py"])
-            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png")
+            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Last data collection")
+            
         except:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="There is no data to plot")
 
