@@ -15,7 +15,8 @@ running_process = None
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global running_process
     if running_process is None:
-        command = "./ping_collector.sh"  # Replace with your command to start
+        command = "./ping_collector.sh"
+        wipe_data = subprocess.Popen(['bash', '-c', "> ping.csv"])
         running_process = subprocess.Popen(['bash', '-c', command])
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Collecting ping data")
     else:
@@ -27,7 +28,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def stop_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     global running_process
     if running_process is not None:
-        running_process.stop()
+        running_process.terminate()
         running_process = None
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Stopped collecting")
     else:
