@@ -10,6 +10,6 @@ while true; do
     current_date=$(date +"%Y-%m-%d")
     current_time=$(date +"%H:%M:%S")
 
-    echo "$ping_info,$current_time,$current_date" > ping.csv
+    echo "$ping_info,$current_time,$current_date" >> ping.csv
 done
 
