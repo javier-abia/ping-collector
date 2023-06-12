@@ -9,20 +9,6 @@ sns.set_theme(style="whitegrid")
 # Loading the csv file as a pandas DataFrame
 df =  pd.read_csv("ping.csv")
 
-'''
-# Plot data
-g = sns.relplot(
-    data=df,
-    x="time", y="avg", hue="max"
-)
-
-
-
-# Config plot
-g.set_axis_labels("Local time", "average (ms)", labelpad=10)
-# g.set_xticklabels(rotation = 90)
-'''
-
 # Calculate the desired number of ticks based on the data length
 desired_tick_interval = 4
 num_ticks = int(len(df["time"]) / desired_tick_interval)
