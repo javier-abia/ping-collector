@@ -1,3 +1,4 @@
 .env
 venv/
 ping.csv
+plot.png
