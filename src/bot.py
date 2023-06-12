@@ -42,6 +42,15 @@ async def check_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Ping collector is off")
 
+# Function to handle the /plot command -> Sends plotted data
+async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global running_process
+    if running_process is not None:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text="Can't send plot, ping is being collected")
+    else:
+        await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png")
+
+
 
 def main():
     application = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -50,6 +59,7 @@ def main():
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("stop", stop_command))
     application.add_handler(CommandHandler("check", check_command))
+    application.add_handler(CommandHandler("plot", plot_command))
 
 
     # Start the bot   
