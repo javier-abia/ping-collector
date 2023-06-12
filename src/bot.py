@@ -4,6 +4,7 @@ import subprocess
 from dotenv import load_dotenv
 from telegram import Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, CommandHandler, ContextTypes
+from graph import plot
 
 # We load the bot token from the .env file
 load_dotenv()
@@ -54,8 +55,15 @@ async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             # Execute pyhton script to plot and send photo
-            subprocess.Popen(['bash', '-c', "python3 graph.py"])
-            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Ping is being collected, here is the progress")
+            plot()
+
+            # This loop gives time to make the plot
+            while True:
+                try:
+                    await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Ping is being collected, here is the progress")
+                    break
+                except:
+                    False
         except:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="There is no data to plot")
 
@@ -63,9 +71,15 @@ async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         try:
             # Execute pyhton script to plot and send photo
-            subprocess.Popen(['bash', '-c', "python3 graph.py"])
-            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Last data collection")
-            
+            plot()
+
+            # This loop gives time to make the plot
+            while True:
+                try:
+                    await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png", caption="Last data collection")
+                    break
+                except:
+                    False
         except:
             await context.bot.send_message(chat_id=update.effective_chat.id, text="There is no data to plot")
 
