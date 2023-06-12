@@ -48,9 +48,14 @@ async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if running_process is not None:
         await context.bot.send_message(chat_id=update.effective_chat.id, text="Can't send plot, ping is being collected")
     else:
-        await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png")
-
-
+        # Remove old photo
+        subprocess.Popen(['bash', '-c', "rm ./plot.png"])
+        try:
+            # Execute pyhton script to plot and send photo
+            subprocess.Popen(['bash', '-c', "python3 graph.py"])
+            await context.bot.send_photo(chat_id=update.effective_chat.id, photo="./plot.png")
+        except:
+            await context.bot.send_message(chat_id=update.effective_chat.id, text="There is no data to plot")
 
 def main():
     application = ApplicationBuilder().token(BOT_TOKEN).build()
