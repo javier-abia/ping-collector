@@ -1,4 +1,5 @@
 import os
+import time
 import subprocess
 from dotenv import load_dotenv
 from telegram import Update
@@ -48,7 +49,7 @@ async def plot_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Remove old photo
     subprocess.Popen(['bash', '-c', "rm ./plot.png"])
-    
+    time.sleep(1)
     if running_process is not None:
 
         try:
