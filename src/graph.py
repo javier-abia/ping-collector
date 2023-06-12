@@ -12,7 +12,7 @@ df = pd.read_csv("ping.csv")
 # Plot data
 g = sns.relplot(
     data=df,
-    x="time", y="avg"
+    x="time", y="avg", hue="max"
 )
 
 # Config plot
